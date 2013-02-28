@@ -28,8 +28,8 @@ def countWords(URL):
 		
 	return wordCount
 	
-def wordPerLength(URL, word):
-	wordCounter = countWords(URL)
+def wordPerLength(wordCounter, word):
+	#wordCounter = countWords(URL)
 	counter = 0.0
 	for eachWord in wordCounter:
 		counter += wordCounter[eachWord]
@@ -40,8 +40,8 @@ def wordPerLength(URL, word):
 	#print ratio
 	return ratio
 		
-def numAppearances(URL, word):
-	wordCounter = countWords(URL)
+def numAppearances(wordCounter, word):
+	#wordCounter = countWords(URL)
 	count = wordCounter[word]
 	return count
 	
