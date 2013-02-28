@@ -1,4 +1,6 @@
 import urllib
+import string
+import re
 
 def countWords(URL):
 
@@ -8,11 +10,15 @@ def countWords(URL):
 	##separatedWords is an array of strings used to hold the split contents of the page
 	separateWords = pageContent.split()
 	
-	
+	##get rid of punctuation
+	strippedWords = []
+	for word in separateWords:
+		word = re.sub('[%s]'%re.escape(string.punctuation),'',word)
+		strippedWords.append(word)
 	
 	wordCount = {}
 	
-	for word in separateWords:
+	for word in strippedWords:
 		if word in wordCount:
 			count = wordCount[word]
 			wordCount[word] += 1
