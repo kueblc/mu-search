@@ -1,9 +1,10 @@
 import json
 import urllib
+import sys
+import time
 import simhash #custom simple hash module
 import countWords #custom word count module
-import sys
-import Page
+import Page #Page class
 
 #Attribution
 #Rory Thrasher - thrasr@rpi.edu
@@ -11,15 +12,12 @@ import Page
 #Gavin Greenewalt - ggreenewalt@gmail.com OR greeng4@rpi.edu
 #Colin Kuebler - kueblc@gmail.com
 
-
-
 def get_cats(terms):
     f = open("CatTerms.txt")
     for line in f:
         line = line.strip('\n')
         terms.append(line)
     return terms
-    
 
 def encode(address, query, start, length):
     dict = {}
@@ -29,7 +27,6 @@ def encode(address, query, start, length):
     params = urllib.urlencode(dict)
     address = address + params
     return address
-    
 
 def get_dict(query, start, length):
     # Create the request
@@ -71,8 +68,7 @@ def merge_pages(true_pages, cat_pages, q):
         final_pages.append(true_pages[i])
     
     return final_pages
-        
-    
+
 
 # Main
 
@@ -85,6 +81,9 @@ if len(sys.argv) != 4:
 # Read in Cat Database
 terms = []
 terms = get_cats(terms)
+
+# Start timer
+start = time.time()
 
 # Grab JSON from faroo
 true_json = get_dict(sys.argv[1], int(sys.argv[2]), int(sys.argv[3])) 
@@ -115,7 +114,7 @@ cat_pages = create_pages(cat_json, True)
 for pg in true_pages:
     pg.calc_value(sys.argv[1] + ' ' + terms[simhash.hash(sys.argv[1])])
 for pg in cat_pages:
-    pg.calc_value(sys.argv[1] + ' ' + terms[simhash.hash(sys.argv[1])])
+    pg.calc_value(sys.argv[1])
 
 true_pages.sort()
 cat_pages.sort()
@@ -135,60 +134,9 @@ while(i<true_json['length']):
 final_dict = true_json
 final_dict['count'] = i
 final_dict['results'] = final_results_json
+final_dict['time'] = true_json['time'] + cat_json['time'] + (time.time()-start)/1000
+print true_json['time'], cat_json['time'], (time.time()-start)/1000
 
 # Convert to JSON and print
 print json.dumps(final_dict)
 
-
-
-"""
-faroo = 'http://faroo.com/api?'
-faroo = add_q(faroo, 'iphone')
-#raw_input('enter a search term> ')
-
-js = urllib.urlopen(faroo)
-
-results = json.load(js)
-result = results['results']
-
-print "Found", results['count'], "item(s) in", results['time'], "ms."
-print "Displaying results", results['start'], "to", min(results['length'], results['count'])
-print
-
-for i,item in enumerate(result):
-    print_res(i+1,item)
-    
-"""
-"""
-cont = True
-start = 1
-length = 10
-query = raw_input('Please enter a query: ')
-
-while cont:
-    faroo = 'http://faroo.com/api?'
-    faroo = add_q(faroo, query)
-    faroo = add_range(faroo, start, length)
-    #print faroo
-    js = urllib2.urlopen(faroo)
-
-    results = json.load(js)
-    result = results['results']
-    
-    if results['count'] == 0:
-        print "No results found."
-        break
-
-    print "Found", results['count'], "item(s) in", results['time'], "ms."
-    print "Displaying results", results['start'], "to", min(results['start']+results['length'], results['count'])
-    print
-
-    for i,item in enumerate(result):
-        print_res(i+start,item)
-        
-    if results['count'] < results['start']+results['length'] or raw_input("More? (Y/N)").lower() == 'n':
-        cont=False
-    else:
-        start+=10
-        print
-""" 

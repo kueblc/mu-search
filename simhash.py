@@ -30,5 +30,4 @@ def hash(mystr, size):
 
     # Output: hash - a integer between 0 and size-1 (inclusive)
     # Uses type long for mod as hash can get very large
-    print hash
     return int(long(hash)%long(size))
