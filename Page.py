@@ -21,16 +21,17 @@ class Page:
             return True
         return False
     
-    def get_value(self)
-        return self.value
+    def get_json(self):
+        return self.json_data
     
     def calc_value(self, query):
         #query is a list of words?
         #perhaps make it a list...
+        q = query.split(' ')
         v = 0.0
         k1 = 5
         k2 = 100
-        for term in query:
+        for term in q:
             v += k1*wordCount.get(term, 0)
             v += k2*ratio.get(term, 0)
         self.value = v
