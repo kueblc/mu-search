@@ -1,4 +1,7 @@
+adopt
 abyssynian
+aristocat
+alley cat
 american bobtail
 american shorthair
 balinese
@@ -6,65 +9,58 @@ bengal
 birman
 black cat
 bobcat
-bombay
 british shorthair
-burmese
 cat
-cat burglar
 cat nap
-cat nip
-claws
-cornish
-cub
+catnip
+cheetah
+cheshire
 declawed
 devonshire rex
-domestic
 donskoy cat
 egyptian mau
 feline
-fur
-furry
-groom
+felidae
+fresh step
 havana brown
-here
-himalayan
 jaguar
 kitten
 kitty
+kitty-cat
+kitteh
+kitties
 leopard
 lion
 litter
+lynx
+moggy
+mouser
 maine coon
 manx cat
 meow
-meow-ouch!
 mew
-munchkin
-norwegian forest
+meow mix
 ocicat
 panther
 paws
-persian
 pet
 pounce
 pride
+purr
 purrfect
 purring
-ragdoll
+pussycat
+puma
 russian blue
-savannah
 scottish fold
-scratch
+shelter
 siamese
-siberian
-singapura
-sleep
 snow leopard
-soft
 sphinx
-tail
+tabby
+tomcat
 tiger
 tigress
 turkish angora
 whiskers
-
+wildcat
