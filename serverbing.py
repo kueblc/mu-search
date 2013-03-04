@@ -19,8 +19,9 @@ import simhash      # custom simple hash module
 import countWords   # custom word count module
 import Page         # Page class
 
-def get_cats(terms):
+def get_cats():
     # function to load cat terms from the file
+    terms = []
     f = open("CatTerms.txt")
     for line in f:
         line = line.strip('\n')
@@ -123,7 +124,7 @@ if len(sys.argv) != 4:
     print "USAGE:", sys.argv[0], '"a query"', 'start', 'length'
 
 # Read in Cat Database
-terms = get_cats(terms)
+terms = get_cats()
 
 # Start timer
 start = time.time()
