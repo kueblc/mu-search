@@ -1,5 +1,6 @@
 import json
 import urllib
+import urllib2
 import sys
 import time
 import simhash #custom simple hash module
@@ -27,6 +28,18 @@ def encode(address, query, start, length):
     params = urllib.urlencode(dict)
     address = address + params
     return address
+
+def get_dict2(query, start, rpp):
+    rpp = str(rpp)
+    # Create the request
+    searchUrl = 'https://api.datamarket.azure.com/Bing/Search/Web?$format=json&$top=' + rpp + '&Query=' + urllib.quote("'" + query + "'")
+
+    passwordMgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+    #passwordMgr.add_password(None, searchUrl,'emailAddress','accountKey')
+    passwordMgr.add_password(None, searchUrl, 'gavinthorp@hotmail.com', 'Jeoi2mrMoXjv2ikMjx/FTL6z/s1luJnu0YqD/mQWyaM=')
+
+    urllib2.install_opener(urllib2.build_opener(urllib2.HTTPBasicAuthHandler(passwordMgr)))
+    return json.loads(urllib2.urlopen(searchUrl).read())['d']
 
 def get_dict(query, start, length):
     # Create the request
@@ -69,6 +82,27 @@ def merge_pages(true_pages, cat_pages, q):
     
     return final_pages
 
+def convert_to_faroo(json_results, faroo_json, faroo_results, length, query):
+    new_json = faroo_json.copy()
+    new_json['count'] = length
+    new_json['length'] = length
+    new_json['time'] = 0
+    new_json['query'] = query
+    new_json['results'] = []
+    
+    new_results = faroo_results.copy()
+    
+    for res in json_results:
+        temp = new_results.copy()
+        #print type(temp), type(res)
+        temp['url'] = res['Url']
+        temp['domain'] = res['DisplayUrl']
+        temp['title'] = res['Title']
+        temp['kwic'] = res['Description']
+        new_json['results'].append(temp)
+    
+    
+    return new_json
 
 # Main
 
@@ -85,16 +119,42 @@ terms = get_cats(terms)
 # Start timer
 start = time.time()
 
+
+
 # Grab JSON from faroo
-true_json = get_dict(sys.argv[1], int(sys.argv[2]), int(sys.argv[3])) 
-cat_json =  get_dict(sys.argv[1] + ' ' + terms[simhash.hash(sys.argv[1], len(terms))], sys.argv[2], sys.argv[3])
+faroo_json = get_dict('cat', 1, 10)   #faroo results to get an empty dictionary
+faroo_results = faroo_json['results'][0]
+true_json = get_dict2(sys.argv[1], int(sys.argv[2]), int(sys.argv[3])) 
+cat_json =  get_dict2(sys.argv[1] + ' ' + terms[simhash.hash(sys.argv[1], len(terms))], sys.argv[2], sys.argv[3])
+
+#print terms[simhash.hash(sys.argv[1], len(terms))]
+
+faroo_results['iurl'] = ''
+#faroo_results['domain'] = 
+faroo_results['author'] = ''
+faroo_results['votes'] = ''
+faroo_results['related'] = ''
+faroo_results['content'] = ''
+faroo_results['date'] = ''
+
+
+true_json = convert_to_faroo(true_json['results'], faroo_json, faroo_results, sys.argv[3], sys.argv[1])
+cat_json = convert_to_faroo(cat_json['results'], faroo_json, faroo_results, sys.argv[3], sys.argv[1])
+
+
+#print faroo_json.keys()
+#print true_json['results'][0].keys()
+#print faroo_results.keys()
+#print faroo_results['domain']
+
+
 
 # Check for 0 results
-if true_json['count'] == 0:
+if len(true_json['results']) == 0:
     # convert back to JSON and print/return
     print json.dumps(true_json)
     sys.exit(0)
-if cat_json['count'] == 0:
+if len(cat_json['results']) == 0:
     # perhaps rank results on cats?
     # convert true_json back to JSON and print/return
     print json.dumps(true_json)
@@ -125,7 +185,7 @@ final_pages = merge_pages(true_pages, cat_pages, sys.argv[1])
 # Convert back to correct obj
 final_results_json = []
 i = 0
-while(i<true_json['length']):
+while(i<sys.argv[3]):
     if i == len(final_pages):
         break
     final_results_json.append(final_pages[i].get_json())

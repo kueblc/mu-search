@@ -9,13 +9,14 @@ class Page:
     
     def __init__(self, new_json, new_isCat):
         self.json_data = new_json
-        self.isCat = isCat
+        self.isCat = new_isCat
+        
         self.wordCount = countWords.countWords(self.json_data['url'])
         
         self.ratio = self.wordCount
-        for key in ratio:
+        for key in self.ratio:
             self.ratio[key] = countWords.wordPerLength(self.wordCount, key)
-    
+        
     def __lt__(self, other):
         if self.value < other.value:
             return True
@@ -26,14 +27,15 @@ class Page:
     
     def calc_value(self, query):
         #query is a list of words?
+        #return .5
         #perhaps make it a list...
         q = query.split(' ')
         v = 0.0
         k1 = 5
         k2 = 100
         for term in q:
-            v += k1*wordCount.get(term, 0)
-            v += k2*ratio.get(term, 0)
+            v += k1*self.wordCount.get(term, 0)
+            v += k2*self.ratio.get(term, 0)
         self.value = v
         
         '''

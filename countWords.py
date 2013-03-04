@@ -1,11 +1,15 @@
 import urllib
 import string
 import re
+import remove_tags
 
 def countWords(URL):
 
 	##pageContent is a string holding the contents of the webpage
 	pageContent = urllib.urlopen(URL).read()
+	
+	#pageContent = remove_tags.remove_tags(pageContent)
+	
 	
 	##separatedWords is an array of strings used to hold the split contents of the page
 	separateWords = pageContent.split()
