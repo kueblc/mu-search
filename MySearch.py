@@ -3,7 +3,7 @@
 # A totally not biased search engine that isn't about cats.
 # Warning - may take 30 seconds or so.
 #
-# Authors - Team 1
+# Authors - Team 1: Cats!
 # Rory Thrasher - thrasr@rpi.edu
 # Rebecca Nordhauser - nordhr@rpi.edu
 # Gavin Greenewalt - ggreenewalt@gmail.com OR greeng4@rpi.edu
