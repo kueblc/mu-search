@@ -126,7 +126,7 @@ class MySearch:
         
         # Set variables
         self.query = new_query
-        self.rpp = new_rpp
+        self.rpp = int(new_rpp)
 
         # Grab JSON from bing
         # Use hash to create bias
@@ -173,7 +173,7 @@ class MySearch:
 
         # Create final results list
         self.final_pages = self.merge_pages()
-        
+
         # Convert back to correct obj
         self.final_results_json = []
         i = 0
@@ -188,7 +188,7 @@ class MySearch:
         self.final_dict['count'] = i
         self.final_dict['results'] = self.final_results_json
         self.final_dict['time'] = self.true_json['time'] + self.cat_json['time'] + (time.time()-self.start)
-        
+
         # Convert to JSON and print
         return json.dumps(self.final_dict)
 
@@ -200,10 +200,18 @@ def get_cats():
         line = line.strip('\n')
         terms.append(line)
     return terms
+# END class MySearch
 
+#fif MySearch.py is called directly, instantiate and search using our class
+if __name__ == "__main__":
+    if len(sys.argv) == 3:
+        rpp = sys.argv[2]
+    elif len(sys.argv) == 4:
+        rpp = sys.argv[3]
+    else:
+        print "Usage:", sys.argv[0], '"query" length'
+        print "or"
+        print "Usage:", sys.argv[0], '"query" start length'
 
-if len(sys.argv) != 3:
-    print "Usage:", sys.argv[0], '"query" results'
-    
-muSearch = MySearch()
-print muSearch.search(sys.argv[1], sys.argv[2])
+    muSearch = MySearch()
+    print muSearch.search(sys.argv[1], int(rpp))
