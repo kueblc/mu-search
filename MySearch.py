@@ -158,7 +158,8 @@ class MySearch:
         # Crawl each page as we create
         temp = self.query.split(' ') + self.terms
         self.true_pages = self.create_pages(self.true_json, False, temp)
-        self.cat_pages = self.create_pages(self.cat_json, True, temp)
+        #self.cat_pages = self.create_pages(self.cat_json, True, temp)
+        self.cat_pages = self.create_pages(self.cat_json, True, self.query.split(' '))
 
         # Rank all pages
         for pg in self.true_pages:
