@@ -60,12 +60,17 @@ window.onload = function(){
 		results = $('results');
 	
 	function submit(){
+		// set to show results mode
 		document.body.className = 'show';
-		results.innerHTML = '';
+		// show loading image
+		results.innerHTML = '<li><img alt="Loading..." src="http://4.bp.blogspot.com/-t_bGGwTcVPo/T9xQ9OALrZI/AAAAAAAAAEc/yoQEm6pv2_0/s400/cat-dance.gif"></li>';
+		// query the server
 		var response = sjax( 'http://www.faroo.com/api', {
 			'q': query.value,
 			'start': page * 10 + 1,
 			'length': 10 } );
+		// display results
+		results.innerHTML = '';
 		for( var i in response.results ){
 			var result = response.results[i];
 			results.innerHTML += "<li><a href='" + result.url + "'>" +
