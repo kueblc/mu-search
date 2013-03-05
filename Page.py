@@ -11,11 +11,12 @@ class Page:
         self.json_data = new_json
         self.isCat = new_isCat
         
-        self.wordCount = countWords.countWords(self.json_data['url'])
+        self.wordCount, self.count = countWords.countWords(self.json_data['url'])
         
         self.ratio = self.wordCount
         for key in self.ratio:
-            self.ratio[key] = countWords.wordPerLength(self.wordCount, key)
+            #self.ratio[key] = countWords.wordPerLength(self.wordCount, key)
+            self.ratio[key] = self.wordCount[key]/self.count
         
     def __lt__(self, other):
         if self.value < other.value:
@@ -37,6 +38,7 @@ class Page:
             v += k1*self.wordCount.get(term, 0)
             v += k2*self.ratio.get(term, 0)
         self.value = v
+        
         
         '''
         #cat search should value true terms
