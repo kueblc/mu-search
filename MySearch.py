@@ -80,11 +80,11 @@ class MySearch:
         return new_json
 
 
-    def create_pages(self, json_dict, isCat):
+    def create_pages(self, json_dict, isCat, myList):
         # create a list of pages given a results json dictionary object
         pages = []
         for result in json_dict['results']:
-            temp = Page.Page(result, isCat)
+            temp = Page.Page(result, isCat, myList)
             pages.append(temp)
         return pages
 
@@ -156,8 +156,9 @@ class MySearch:
 
         # Populate classes
         # Crawl each page as we create
-        self.true_pages = self.create_pages(self.true_json, False)
-        self.cat_pages = self.create_pages(self.cat_json, True)
+        temp = self.query.split(' ') + self.terms
+        self.true_pages = self.create_pages(self.true_json, False, temp)
+        self.cat_pages = self.create_pages(self.cat_json, True, temp)
 
         # Rank all pages
         for pg in self.true_pages:

@@ -7,11 +7,13 @@ class Page:
     value = 0.0
     isCat = False
     
-    def __init__(self, new_json, new_isCat):
+    def __init__(self, new_json, new_isCat, wordList):
         self.json_data = new_json
         self.isCat = new_isCat
         
-        self.wordCount, self.count = countWords.countWords(self.json_data['url'])
+        #self.wordCount, self.count = countWords.countWords(self.json_data['url'])
+        self.wordCount, self.count = countWords.countWordsFast(self.json_data['url'], wordList)
+        
         
         self.ratio = self.wordCount
         for key in self.ratio:
